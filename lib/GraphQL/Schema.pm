@@ -119,11 +119,15 @@ In this schema, get all of either the implementation types
 
 =cut
 
-fun _expand_type(
-  (Map[StrNameValid, ConsumerOf['GraphQL::Role::Named']]) $map,
-  (InstanceOf['GraphQL::Type']) $type,
-) :ReturnType(ArrayRef[ConsumerOf['GraphQL::Role::Named']]) {
-  # If we can, use goto to avoid blowing out the stack
+# fun _expand_type(
+#   (Map[StrNameValid, ConsumerOf['GraphQL::Role::Named']]) $map,
+#   (InstanceOf['GraphQL::Type']) $type,
+# ) :ReturnType(ArrayRef[ConsumerOf['GraphQL::Role::Named']]) {
+sub _expand_type {
+  my ($map, $type) = @_;
+
+  # If we can, use goto to avoid blowing out the stack. Clobbering @_ in this instance should be fine
+  # since it can't be used anywhere else..
   if ($type->can('of')) {
     @_ = ($map, $type->of);
     goto &_expand_type;
@@ -364,10 +368,13 @@ or C<non_null>) called, and that will be returned.
 
 =cut
 
-fun lookup_type(
-  HashRef $typedef,
-  (Map[StrNameValid, InstanceOf['GraphQL::Type']]) $name2type,
-) :ReturnType(InstanceOf['GraphQL::Type']) {
+# fun lookup_type(
+#   HashRef $typedef,
+#   (Map[StrNameValid, InstanceOf['GraphQL::Type']]) $name2type,
+# ) :ReturnType(InstanceOf['GraphQL::Type']) {
+sub lookup_type {
+  my ($typedef, $name2type) = @_;
+
   my $type = $typedef->{type};
   die "Undefined type given\n" if !defined $type;
   return $name2type->{$type} // die "Unknown type '$type'.\n"
