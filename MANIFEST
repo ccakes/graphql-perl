@@ -58,6 +58,8 @@ t/execution-nonnull.t
 t/execution-resolve.t
 t/execution-schema.t
 t/execution-sync.t
+t/execution-typecheck-lax.t
+t/execution-typecheck-strict.t
 t/execution-variables.t
 t/kitchen-sink.graphql
 t/language-block-string-value.t

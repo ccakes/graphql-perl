@@ -1,15 +1,13 @@
-use lib 't/lib';
-use GQLTest;
-use mro;
-
 BEGIN {
   $ENV{PERL_STRICT} = 1;
 }
 use Devel::StrictMode;
 
-unless (STRICT) {
-  plan skip_all => 'STRICT mode is not enabled';
-}
+use lib 't/lib';
+use GQLTest;
+use mro;
+
+BAIL_OUT('STRICT mode is not enabled') unless STRICT;
 
 package OtherNamespace::Foo {
   use GraphQL::Type::Object;

@@ -1,15 +1,13 @@
-use lib 't/lib';
-use GQLTest;
-use mro;
-
 BEGIN {
   undef $ENV{$_} foreach (qw(EXTENDED_TESTING AUTHOR_TESTING RELEASE_TESTING PERL_STRICT));
 }
 use Devel::StrictMode;
 
-if (STRICT) {
-  plan skip_all => 'STRICT mode is enabled';
-}
+use lib 't/lib';
+use GQLTest;
+use mro;
+
+BAIL_OUT('STRICT mode is enabled') if STRICT;
 
 package OtherNamespace::Foo {
   use GraphQL::Type::Object;
