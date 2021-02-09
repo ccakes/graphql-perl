@@ -60,11 +60,15 @@ sub ReturnType : ATTR(CODE) {
 }
 
 sub import {
-  my $caller = caller;
+
+  # No-op unless the import method is being called as a direct result of using this module.
+  # return early if being called while importing a package that inherts GraphQL::MaybeTypeCheck
+  return unless $_[0] eq __PACKAGE__;
 
   # Here we push ourselves onto @ISA of the caller so they use our ReturnType
-  # attribute which conditionally wraps the target sub depending on whetther
+  # attribute which conditionally wraps the target sub depending on whether
   # strict mode is enabled or not.
+  my $caller = caller;
   {
     no strict 'refs';
     push @{"${caller}::ISA"}, __PACKAGE__;
